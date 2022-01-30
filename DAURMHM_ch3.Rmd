@@ -1,15 +1,48 @@
 ---
-title: "R Notebook"
-output: 
-  html_notebook:
-  html_document:
-    keep_md: yes
+title: "Chapter 3 Exercises"
+output:
+  pdf_document: default
+  html_notebook: default
 ---
 
 
+#Exercise 1
+
+Lets load in the data file and take a look:
 ```{r}
-plot(cars)
+dat=read.table("./ARM_Data/pyth/exercise2.1.dat",header=TRUE)
+head(dat)
+```
+According to the text some of the data does not have y values; confirm that and create a subset of just the labelled data:
+```{r}
+#how many rows have y label
+print(paste("Labeled: ", sum(!is.na(dat$y))))
+#how many rows do not have y label
+print(paste("Unlabeled: ",sum(is.na(dat$y))))
+label<-dat[!is.na(dat$y),]
 ```
 
+Lets take a look at the distribution of the predictors for the labelled data:
+```{r}
+plot(label[c('x1','x2')])
+```
+
+Now lets plot the response against each predictor, starting with x1:
+```{r}
+plot(label[c('x1','y')])
+```
+Not much of a relation on the margin...
+
+Now x2:
+```{r}
+plot(label[c('x2','y')])
+```
+Oh that looks quite a bit stronger.
+
+Now lets fit a linear model to the labelled data:
+```{r}
+fit = lm(label$y ~ label$x1 + label$x2)
+summary(fit)
+```
 
 
